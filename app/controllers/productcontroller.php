@@ -49,7 +49,6 @@ class ProductController extends Controller
     {
         try {
             $product = $this->createObjectFromPostedJson("Models\\Product");
-            // something is missing. Shouldn't we update the product in the DB?
             $this->service->insert($product);
 
         } catch (Exception $e) {
@@ -63,7 +62,6 @@ class ProductController extends Controller
     {
         try {
             $product = $this->createObjectFromPostedJson("Models\\Product");
-            // something is missing. Shouldn't we update the product in the DB?
             $this->service->update($product, $id);
 
         } catch (Exception $e) {
@@ -71,5 +69,16 @@ class ProductController extends Controller
         }
 
         $this->respond($product);
+    }
+
+    public function delete($id)
+    {
+        try {
+            $this->service->delete($id);
+        } catch (Exception $e) {
+            $this->respondWithError(500, $e->getMessage());
+        }
+
+        $this->respond(true);
     }
 }
