@@ -49,7 +49,7 @@ class ProductController extends Controller
     {
         try {
             $product = $this->createObjectFromPostedJson("Models\\Product");
-            $this->service->insert($product);
+            $product = $this->service->insert($product);
 
         } catch (Exception $e) {
             $this->respondWithError(500, $e->getMessage());
@@ -62,7 +62,7 @@ class ProductController extends Controller
     {
         try {
             $product = $this->createObjectFromPostedJson("Models\\Product");
-            $this->service->update($product, $id);
+            $product = $this->service->update($product, $id);
 
         } catch (Exception $e) {
             $this->respondWithError(500, $e->getMessage());

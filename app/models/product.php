@@ -9,7 +9,8 @@ class Product {
     public string $description;
     public string $image;
     public string $category_id;
-  
+    public Category $category;
+ 
 }
 
 ?>

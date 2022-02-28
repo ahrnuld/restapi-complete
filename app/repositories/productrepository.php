@@ -2,6 +2,8 @@
 
 namespace Repositories;
 
+use Models\Category;
+use Models\Product;
 use PDO;
 use PDOException;
 use Repositories\Repository;
@@ -11,7 +13,7 @@ class ProductRepository extends Repository
     function getAll($offset = NULL, $limit = NULL)
     {
         try {
-            $query = "SELECT * FROM product";
+            $query = "SELECT product.*, category.name as category_name FROM product INNER JOIN category ON product.category_id = category.id";
             if (isset($limit) && isset($offset)) {
                 $query .= " LIMIT :limit OFFSET :offset ";
             }
@@ -22,10 +24,12 @@ class ProductRepository extends Repository
             }
             $stmt->execute();
 
-            $stmt->setFetchMode(PDO::FETCH_CLASS, 'Models\Product');
-            $articles = $stmt->fetchAll();
+            $products = array();
+            while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) !== false) {               
+                $products[] = $this->rowToProduct($row);
+            }
 
-            return $articles;
+            return $products;
         } catch (PDOException $e) {
             echo $e;
         }
@@ -34,17 +38,35 @@ class ProductRepository extends Repository
     function getOne($id)
     {
         try {
-            $stmt = $this->connection->prepare("SELECT * FROM product WHERE id = :id");
+            $query = "SELECT product.*, category.name as category_name FROM product INNER JOIN category ON product.category_id = category.id WHERE product.id = :id";
+            $stmt = $this->connection->prepare($query);
             $stmt->bindParam(':id', $id);
             $stmt->execute();
 
-            $stmt->setFetchMode(PDO::FETCH_CLASS, 'Models\Product');
-            $product = $stmt->fetch();
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            $row = $stmt->fetch();
+            $product = $this->rowToProduct($row);
 
             return $product;
         } catch (PDOException $e) {
             echo $e;
         }
+    }
+
+    function rowToProduct($row) {
+        $product = new Product();
+        $product->id = $row['id'];
+        $product->name = $row['name'];
+        $product->price = $row['price'];
+        $product->description = $row['description'];
+        $product->image = $row['image'];
+        $product->category_id = $row['category_id'];
+        $category = new Category();
+        $category->id = $row['category_id'];
+        $category->name = $row['category_name'];
+
+        $product->category = $category;
+        return $product;
     }
 
     function insert($product)
@@ -56,7 +78,7 @@ class ProductRepository extends Repository
 
             $product->id = $this->connection->lastInsertId();
 
-            return $product;
+            return $this->getOne($product->id);
         } catch (PDOException $e) {
             echo $e;
         }
@@ -70,7 +92,7 @@ class ProductRepository extends Repository
 
             $stmt->execute([$product->name, $product->price, $product->description, $product->image, $product->category_id, $id]);
 
-            return $product;
+            return $this->getOne($product->id);
         } catch (PDOException $e) {
             echo $e;
         }
