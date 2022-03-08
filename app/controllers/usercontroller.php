@@ -36,19 +36,20 @@ class UserController extends Controller
     public function generateJwt($user) {
         $secret_key = "YOUR_SECRET_KEY";
 
-        $issuer_claim = "THE_ISSUER"; // this can be the servername
-        $audience_claim = "THE_AUDIENCE";
+        $issuer = "THE_ISSUER"; // this can be the domain/servername that issues the token
+        $audience = "THE_AUDIENCE"; // this can be the domain/servername that checks the token
 
-        $issuedat_claim = time(); // issued at
-        $notbefore_claim = $issuedat_claim; //not before in seconds
-        $expire_claim = $issuedat_claim + 600; // expire time in seconds (10 minutes)
+        $issuedAt = time(); // issued at
+        $notbefore = $issuedAt; //not valid before 
+        $expire = $issuedAt + 600; // expiration time is set at +600 seconds (10 minutes)
 
+        // note how these claims are 3 characters long to keep the JWT as small as pissible
         $payload = array(
-            "iss" => $issuer_claim,
-            "aud" => $audience_claim,
-            "iat" => $issuedat_claim,
-            "nbf" => $notbefore_claim,
-            "exp" => $expire_claim,
+            "iss" => $issuer,
+            "aud" => $audience,
+            "iat" => $issuedAt,
+            "nbf" => $notbefore,
+            "exp" => $expire,
             "data" => array(
                 "id" => $user->id,
                 "username" => $user->username,
@@ -62,7 +63,7 @@ class UserController extends Controller
                 "message" => "Successful login.",
                 "jwt" => $jwt,
                 "username" => $user->username,
-                "expireAt" => $expire_claim
+                "expireAt" => $expire
             );
     }    
 }
