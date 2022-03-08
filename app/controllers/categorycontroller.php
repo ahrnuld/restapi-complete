@@ -17,6 +17,11 @@ class CategoryController extends Controller
 
     public function getAll()
     {
+        // Checks for a valid jwt, returns 401 if none is found
+        $token = $this->checkForJwt();
+        if (!$token)
+            return;
+
         $offset = NULL;
         $limit = NULL;
 
@@ -50,7 +55,6 @@ class CategoryController extends Controller
         try {
             $category = $this->createObjectFromPostedJson("Models\\Category");
             $this->service->insert($category);
-
         } catch (Exception $e) {
             $this->respondWithError(500, $e->getMessage());
         }
@@ -63,7 +67,6 @@ class CategoryController extends Controller
         try {
             $category = $this->createObjectFromPostedJson("Models\\Category");
             $this->service->update($category, $id);
-
         } catch (Exception $e) {
             $this->respondWithError(500, $e->getMessage());
         }
