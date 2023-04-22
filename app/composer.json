@@ -4,7 +4,7 @@
           "Routers\\": "routers",
           "Controllers\\": "controllers",
           "Services\\": "services",
-          "Models\\": "models",
+          "Models\\": "Models1",
           "Repositories\\": "repositories"
         }
     },

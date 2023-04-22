@@ -45,7 +45,7 @@ class ComposerStaticInit2a5b000460c064a9c32fe6ac415cfb09
         ),
         'Models\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/models',
+            0 => __DIR__ . '/../..' . '/Models1',
         ),
         'Firebase\\JWT\\' => 
         array (

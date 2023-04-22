@@ -1,16 +1,12 @@
 <?php
-
 namespace Controllers;
-
 use Exception;
-use \Firebase\JWT\JWT;
-use \Firebase\JWT\Key;
 
-class Controller
+class BaseController
 {
     function checkForJwt() {
-         // Check for token header
-         if(!isset($_SERVER['HTTP_AUTHORIZATION'])) {
+        // Check for token header
+        if(!isset($_SERVER['HTTP_AUTHORIZATION'])) {
             $this->respondWithError(401, "No token provided");
             return;
         }
