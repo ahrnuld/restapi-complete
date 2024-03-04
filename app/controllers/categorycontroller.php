@@ -17,11 +17,6 @@ class CategoryController extends Controller
 
     public function getAll()
     {
-        // Checks for a valid jwt, returns 401 if none is found
-        $token = $this->checkForJwt();
-        if (!$token)
-            return;
-
         $offset = NULL;
         $limit = NULL;
 
@@ -41,7 +36,6 @@ class CategoryController extends Controller
     {
         $category = $this->service->getOne($id);
 
-        // we might need some kind of error checking that returns a 404 if the product is not found in the DB
         if (!$category) {
             $this->respondWithError(404, "Category not found");
             return;

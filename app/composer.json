@@ -9,7 +9,6 @@
         }
     },
     "require": {
-        "bramus/router": "~1.6",
-        "firebase/php-jwt": "^6.0"
+        "bramus/router": "~1.6"
     }
 }
