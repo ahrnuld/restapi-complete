@@ -23,7 +23,7 @@ class Controller
     {
         header('Content-Type: application/json; charset=utf-8');
         http_response_code($httpcode);
-        echo json_encode($data);
+        echo json_encode($data, JSON_UNESCAPED_SLASHES);
     }
 
     function createObjectFromPostedJson($className)

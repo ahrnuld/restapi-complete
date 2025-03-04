@@ -48,6 +48,7 @@ class ProductController extends Controller
     public function create()
     {
         try {
+            sleep(2);
             $product = $this->createObjectFromPostedJson("Models\\Product");
             $product = $this->service->insert($product);
 
@@ -61,6 +62,7 @@ class ProductController extends Controller
     public function update($id)
     {
         try {
+            sleep(2);
             $product = $this->createObjectFromPostedJson("Models\\Product");
             $product = $this->service->update($product, $id);
 

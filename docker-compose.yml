@@ -11,6 +11,7 @@ services:
         build:
             context: .
             dockerfile: PHP.Dockerfile
+        working_dir: /app
         volumes:
             - ./app:/app
     mysql:
